@@ -58,7 +58,7 @@ def optimize_model(original_model: PreTrainedModel) -> None:
     assert next(original_model.parameters()).device.type == "cuda", "Model must be on GPU"
     original_model.forward2 = original_model.forward
 
-    @torchdynamo.optimize(_compiler)
+    #@torchdynamo.optimize(_compiler)
     def run(*args, **kwargs):
         return original_model.forward2(*args, **kwargs)
 
