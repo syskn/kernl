@@ -26,6 +26,7 @@ from kernl.optimizer.dynamo_backend import dynamo_backend_ofi
 # https://github.com/pytorch/torchdynamo/issues/1816
 def _compiler(gm: torch.fx.GraphModule, example_inputs: List[torch.Tensor]):
     dynamo_backend_ofi(gm)
+    return gm
     return cuda_graphs_wrapper(gm, example_inputs)
 
 
@@ -58,7 +59,7 @@ def optimize_model(original_model: PreTrainedModel) -> None:
     assert next(original_model.parameters()).device.type == "cuda", "Model must be on GPU"
     original_model.forward2 = original_model.forward
 
-    #@torchdynamo.optimize(_compiler)
+    @torchdynamo.optimize(_compiler)
     def run(*args, **kwargs):
         return original_model.forward2(*args, **kwargs)
 
