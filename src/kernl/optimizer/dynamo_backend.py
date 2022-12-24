@@ -23,12 +23,12 @@ from kernl.optimizer.normalizer import normalize_operators
 
 
 def dynamo_backend_ofi(gm: torch.fx.GraphModule, assume_causal=False):
-    #normalize_operators(gm)
-    #remove_dropout(gm)
+    normalize_operators(gm)
+    remove_dropout(gm)
     fuse_attention_pattern_1(gm, assume_causal)
     fuse_attention_pattern_2(gm, assume_causal)
     fuse_attention_pattern_3(gm, assume_causal)
-    #replace_all_linear(gm)
-    #replace_layer_norm(gm)
-    #replace_layer_norm_rms(gm)
+    replace_all_linear(gm)
+    replace_layer_norm(gm)
+    replace_layer_norm_rms(gm)
     return gm
